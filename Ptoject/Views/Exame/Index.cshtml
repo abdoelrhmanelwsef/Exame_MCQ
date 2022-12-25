@@ -1,0 +1,69 @@
+﻿@using Ptoject.ViewModels;
+
+@model List<Questions>
+
+
+@{
+    int i = 0;
+   
+}
+@if (Model.Any())
+{
+    
+
+    @foreach(var item in Model){
+        <div style="background-color:antiquewhite">@item.Title</div>
+    @foreach (var ans in item.Answers)
+        {
+            
+            <input type="radio" onchange="checkAnswer( @ans.Id)" name="check @i"/>
+
+            <label id="@ans.Id">@ans.Answer</label>
+            <br />
+        }
+
+        ++@i;
+    }
+ 
+}
+
+<input type="datetime-local" />
+
+@section Scripts{
+
+
+    <script>
+     
+        window.addEventListener('load',function(){
+        
+        
+        
+        })//end load
+
+
+        function checkAnswer(id){
+            let data = window.performance.getEntriesByType("navigation")[0].type;
+            var m = document.getElementById(id);
+
+          
+            $.ajax({
+                type: 'POST',
+                url: '/Exame/CheckAnswer',
+                dataType: "json",
+                data: {
+                    "id": id
+                }, success: function (e) {
+                    if(e.res == "Cancel"){
+                        m.style.backgroundColor = "#ffabab"
+                       
+                    }else{
+                        m.style.backgroundColor = "lightgreen"
+
+                    }
+                    
+                }
+            });
+            
+        }
+    </script>
+}
